@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Blog Written in Pelican - misc</title><link href="https://mechaichiro.github.io/" rel="alternate"></link><link href="https://mechaichiro.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://mechaichiro.github.io/</id><updated>2017-07-29T00:00:00+09:00</updated><entry><title>Pelican でブログ</title><link href="https://mechaichiro.github.io/my-first-article.html" rel="alternate"></link><published>2017-07-29T00:00:00+09:00</published><updated>2017-07-29T00:00:00+09:00</updated><author><name>mechaichiro</name></author><id>tag:mechaichiro.github.io,2017-07-29:/my-first-article.html</id><summary type="html">&lt;p&gt;これは reStructuredText 形式です。&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;これは reStructuredText 形式です。&lt;/p&gt;
+</content><category term="python"></category></entry></feed>
