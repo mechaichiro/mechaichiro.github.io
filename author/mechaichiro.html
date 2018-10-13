@@ -21,7 +21,201 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://mechaichiro.github.io/my-first-article.html">Pelican でブログ</a></h1>
+                    <h1 class="entry-title"><a href="https://mechaichiro.github.io/dian-li-ji-henodao-sono1.html">電力計への道 その1</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-08-06T00:00:00+09:00">
+                Published: 日 06 8月 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mechaichiro.github.io/author/mechaichiro.html">mechaichiro</a>
+        </address>
+<p>In <a href="https://mechaichiro.github.io/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info --><p>BP35A1との間はシリアル通信なので、シリアル通信の実験</p>
+<pre class="literal-block">
+#include &lt;dummy.h&gt;
+
+HardwareSerial Serial1(2); // UART2を使う
+
+void setup() {
+    // initialize both serial ports:
+    Serial.begin(115200);
+    Serial1.begin(115200);
+}
+
+void loop() {
+    // read from port 1, send to port 0:
+    if (Serial1.available()) {
+        int inByte = Serial1.read();
+        Serial.write(inByte);
+    }
+
+    // read from port 0, send to port 1:
+    if (Serial.available()) {
+        int inByte = Serial.read();
+        Serial1.write(inByte);
+    }
+}
+</pre>
+<!-- GPIO16がTX
+
+SKINFO
+EINFO FE80:0000:0000:0000:021D:1290:0004:32F7 001D1290000432F7 21 FFFF FFFE
+OK
+
+SKVER
+EVER 1.2.10
+OK
+
+WOPT 01
+
+SKSETPWD C GP7ZYFNH4BZ1
+OK
+SKSETRBID 00000099021100000000000000B3FBBE
+OK
+SKSCAN 2 FFFFFFFF 6
+OK
+EVENT 20 FE80:0000:0000:0000:021D:1290:0004:32F7
+EPANDESC
+Channel:33
+Channel Page:09
+Pan ID:001D
+Addr:58C232FFFEEA4A9E
+LQI:7A
+PairID:00B3FBBE
+EVENT 22 FE80:0000:0000:0000:021D:1290:0004:32F7
+
+SKLL64 58C232FFFEEA4A9E
+FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E
+
+SKSREG S2 33
+
+SKSREG S3 001D
+
+SKJOIN FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E
+
+SKSENDTO 1 FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E 0E1A 1 000E
+
+ERXUDP FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E 0E1A 0E1A XXXXXXXXXXXXXXXX 1 0012 1081000102880105FF017201E704000002AE
+
+
+EHD1 :ECHONET Lite電文ヘッダー1 (1B)
+    0001:ECHONET Lite規格
+EHD2 :ECHONET Lite電文ヘッダー2 (1B)
+    0x81 :形式1
+TID :トランザクションID (2B)
+    送信した要求と受信した応答をひも付けするためのパラメータ
+EDATA :ECHONET Liteデータ
+
+SEOJ :送信元ECHONET Liteオブジェクト指定 (3B)
+    0x05　管理・操作関連機器クラスグループ
+    0xFF　コントローラ
+    0x01　インスタンスコード(1台目)
+DEOJ :相手先ECHONET Liteオブジェクト指定 (3B)
+    3.3.25 低圧スマート電力量メータクラス規定
+    クラスグループコード : 0x02
+    クラスコード : 0x88
+    インスタンスコード : 0x01~0x7F (0x00:全インスタンス指定コード)
+ESV :ECHONET Liteサービス (1B)
+    0x62 プロパティ値読み出し要求
+OPC :処理プロパティ数 (1B)
+    読み出し対象となるプロパティの数
+EPC :ECHONET Liteプロパティ (1B)
+    0xE7 瞬時電力計測値
+    0xE8 瞬時電流計測値
+    0xEA 定時 積算電力量 計測値 (正方向計測値)
+PDC :EDTのバイト数 (1B)
+    読み出し要求の場合は 0x00
+EDT :プロパティ値データ (PDCで指定)
+    読み出し要求の場合は　なし
+
+
+
+
+
+
+ERXUDP +
+<SENDER> +
+<DEST> +
+<RPORT> +
+<LPORT> +
+<SENDERLLA> +
+<SECURED> +
+<DATALEN> +
+<DATA><CRLF>
+
+Name
+Type
+
+Description
+
+<SENDER>
+UINT8[16]
+送信元 IPv6 アドレス
+
+<DEST>
+UINT8[16]
+送信先 IPv6 アドレス
+
+<RPORT>
+UINT16
+送信元ポート番号
+
+<LPORT>
+UINT16
+送信先ポート番号
+
+<SENDERLLA>
+UINT8[8]または UINT16
+送信元の MAC 層アドレス(64bit)
+
+<SECURED>
+UINT8
+1: 受信したIPパケットを構成するMACフレームが暗号化されていた場合
+0: 受信したIPパケットを構成するMACフレームが暗号化されていなかった場合
+
+<DATALEN>
+UINT16
+受信したデータの長さ
+
+<DATA>
+CHAR[]
+受信データ
+
+
+ERXUDP
+FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E
+FF02:0000:0000:0000:0000:0000:0000:0001
+0E1A
+0E1A
+58C232FFFEEA4A9E
+1
+0012
+10
+81
+00000
+EF0010EF0017301D50401028801
+
+
+108100000EF0010EF0017301D50401028801
+
+
+1081000102880105FF017302EA0B07E1080E11000000014F29EB0B07E1080E11000000000002 -->
+                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://mechaichiro.github.io/my-first-article.html" rel="bookmark"
+                           title="Permalink to ペリカンはじめました">ペリカンはじめました</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2017-07-29T00:00:00+09:00">
                 Published: 土 29 7月 2017
@@ -31,10 +225,18 @@
                 By                         <a class="url fn" href="https://mechaichiro.github.io/author/mechaichiro.html">mechaichiro</a>
         </address>
 <p>In <a href="https://mechaichiro.github.io/category/misc.html">misc</a>.</p>
-<p>tags: <a href="https://mechaichiro.github.io/tag/python.html">python</a> </p>
-</footer><!-- /.post-info --><p>これは reStructuredText 形式です。</p>
-                </article>
-            </aside><!-- /#featured -->
+<p>tags: <a href="https://mechaichiro.github.io/tag/pelican.html">pelican</a> <a href="https://mechaichiro.github.io/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <p>コードとかTipsを保管/共有/公開できる場所を考えていましたが、「静的サイトジェネレータ + GitHub Pages」が今どきらしいので、はじめてみました。</p>
+<p>まずは、環境構築。</p>
+<p>静的サイトジェネレータは、Hugoと迷ったのですが、reStructuredText形式で記事をかけるということとPythonで書かれているということでPelicanにしました。</p>
+<p>macOS Sierraなので、pythonはHomebrewで別途用意した方が楽なようです。というかシステム標準装備品を使うと、いろいろハマるようです。
+先人の教えに従い、Homebrewでpyenvをインストールして、そのあとで、python3.7.2をインストールしました。</p>
+
+                <a class="readmore" href="https://mechaichiro.github.io/my-first-article.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>

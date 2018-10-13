@@ -1,4 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>A Blog Written in Pelican - misc</title><link href="https://mechaichiro.github.io/" rel="alternate"></link><link href="https://mechaichiro.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://mechaichiro.github.io/</id><updated>2017-07-29T00:00:00+09:00</updated><entry><title>Pelican でブログ</title><link href="https://mechaichiro.github.io/my-first-article.html" rel="alternate"></link><published>2017-07-29T00:00:00+09:00</published><updated>2017-07-29T00:00:00+09:00</updated><author><name>mechaichiro</name></author><id>tag:mechaichiro.github.io,2017-07-29:/my-first-article.html</id><summary type="html">&lt;p&gt;これは reStructuredText 形式です。&lt;/p&gt;
-</summary><content type="html">&lt;p&gt;これは reStructuredText 形式です。&lt;/p&gt;
-</content><category term="python"></category></entry></feed>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>A Blog Written in Pelican - misc</title><link href="https://mechaichiro.github.io/" rel="alternate"></link><link href="https://mechaichiro.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://mechaichiro.github.io/</id><updated>2017-08-06T00:00:00+09:00</updated><entry><title>電力計への道 その1</title><link href="https://mechaichiro.github.io/dian-li-ji-henodao-sono1.html" rel="alternate"></link><published>2017-08-06T00:00:00+09:00</published><updated>2017-08-06T00:00:00+09:00</updated><author><name>mechaichiro</name></author><id>tag:mechaichiro.github.io,2017-08-06:/dian-li-ji-henodao-sono1.html</id><summary type="html">&lt;p&gt;BP35A1との間はシリアル通信なので、シリアル通信の実験&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#include &amp;lt;dummy.h&amp;gt;
+
+HardwareSerial Serial1(2); // UART2を使う
+
+void setup() {
+    // initialize both serial ports:
+    Serial.begin(115200);
+    Serial1.begin(115200);
+}
+
+void loop() {
+    // read from port 1, send to port 0:
+    if (Serial1.available()) {
+        int inByte = Serial1.read();
+        Serial.write(inByte);
+    }
+
+    // read from port 0, send to port 1:
+    if …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;BP35A1との間はシリアル通信なので、シリアル通信の実験&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#include &amp;lt;dummy.h&amp;gt;
+
+HardwareSerial Serial1(2); // UART2を使う
+
+void setup() {
+    // initialize both serial ports:
+    Serial.begin(115200);
+    Serial1.begin(115200);
+}
+
+void loop() {
+    // read from port 1, send to port 0:
+    if (Serial1.available()) {
+        int inByte = Serial1.read();
+        Serial.write(inByte);
+    }
+
+    // read from port 0, send to port 1:
+    if (Serial.available()) {
+        int inByte = Serial.read();
+        Serial1.write(inByte);
+    }
+}
+&lt;/pre&gt;
+&lt;!-- GPIO16がTX
+
+SKINFO
+EINFO FE80:0000:0000:0000:021D:1290:0004:32F7 001D1290000432F7 21 FFFF FFFE
+OK
+
+SKVER
+EVER 1.2.10
+OK
+
+WOPT 01
+
+SKSETPWD C GP7ZYFNH4BZ1
+OK
+SKSETRBID 00000099021100000000000000B3FBBE
+OK
+SKSCAN 2 FFFFFFFF 6
+OK
+EVENT 20 FE80:0000:0000:0000:021D:1290:0004:32F7
+EPANDESC
+Channel:33
+Channel Page:09
+Pan ID:001D
+Addr:58C232FFFEEA4A9E
+LQI:7A
+PairID:00B3FBBE
+EVENT 22 FE80:0000:0000:0000:021D:1290:0004:32F7
+
+SKLL64 58C232FFFEEA4A9E
+FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E
+
+SKSREG S2 33
+
+SKSREG S3 001D
+
+SKJOIN FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E
+
+SKSENDTO 1 FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E 0E1A 1 000E
+
+ERXUDP FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E 0E1A 0E1A XXXXXXXXXXXXXXXX 1 0012 1081000102880105FF017201E704000002AE
+
+
+EHD1 :ECHONET Lite電文ヘッダー1 (1B)
+    0001:ECHONET Lite規格
+EHD2 :ECHONET Lite電文ヘッダー2 (1B)
+    0x81 :形式1
+TID :トランザクションID (2B)
+    送信した要求と受信した応答をひも付けするためのパラメータ
+EDATA :ECHONET Liteデータ
+
+SEOJ :送信元ECHONET Liteオブジェクト指定 (3B)
+    0x05　管理・操作関連機器クラスグループ
+    0xFF　コントローラ
+    0x01　インスタンスコード(1台目)
+DEOJ :相手先ECHONET Liteオブジェクト指定 (3B)
+    3.3.25 低圧スマート電力量メータクラス規定
+    クラスグループコード : 0x02
+    クラスコード : 0x88
+    インスタンスコード : 0x01~0x7F (0x00:全インスタンス指定コード)
+ESV :ECHONET Liteサービス (1B)
+    0x62 プロパティ値読み出し要求
+OPC :処理プロパティ数 (1B)
+    読み出し対象となるプロパティの数
+EPC :ECHONET Liteプロパティ (1B)
+    0xE7 瞬時電力計測値
+    0xE8 瞬時電流計測値
+    0xEA 定時 積算電力量 計測値 (正方向計測値)
+PDC :EDTのバイト数 (1B)
+    読み出し要求の場合は 0x00
+EDT :プロパティ値データ (PDCで指定)
+    読み出し要求の場合は　なし
+
+
+
+
+
+
+ERXUDP +
+&lt;SENDER&gt; +
+&lt;DEST&gt; +
+&lt;RPORT&gt; +
+&lt;LPORT&gt; +
+&lt;SENDERLLA&gt; +
+&lt;SECURED&gt; +
+&lt;DATALEN&gt; +
+&lt;DATA&gt;&lt;CRLF&gt;
+
+Name
+Type
+
+Description
+
+&lt;SENDER&gt;
+UINT8[16]
+送信元 IPv6 アドレス
+
+&lt;DEST&gt;
+UINT8[16]
+送信先 IPv6 アドレス
+
+&lt;RPORT&gt;
+UINT16
+送信元ポート番号
+
+&lt;LPORT&gt;
+UINT16
+送信先ポート番号
+
+&lt;SENDERLLA&gt;
+UINT8[8]または UINT16
+送信元の MAC 層アドレス(64bit)
+
+&lt;SECURED&gt;
+UINT8
+1: 受信したIPパケットを構成するMACフレームが暗号化されていた場合
+0: 受信したIPパケットを構成するMACフレームが暗号化されていなかった場合
+
+&lt;DATALEN&gt;
+UINT16
+受信したデータの長さ
+
+&lt;DATA&gt;
+CHAR[]
+受信データ
+
+
+ERXUDP
+FE80:0000:0000:0000:5AC2:32FF:FEEA:4A9E
+FF02:0000:0000:0000:0000:0000:0000:0001
+0E1A
+0E1A
+58C232FFFEEA4A9E
+1
+0012
+10
+81
+00000
+EF0010EF0017301D50401028801
+
+
+108100000EF0010EF0017301D50401028801
+
+
+1081000102880105FF017302EA0B07E1080E11000000014F29EB0B07E1080E11000000000002 --&gt;
+</content></entry><entry><title>ペリカンはじめました</title><link href="https://mechaichiro.github.io/my-first-article.html" rel="alternate"></link><published>2017-07-29T00:00:00+09:00</published><updated>2017-07-29T00:00:00+09:00</updated><author><name>mechaichiro</name></author><id>tag:mechaichiro.github.io,2017-07-29:/my-first-article.html</id><summary type="html">&lt;p&gt;コードとかTipsを保管/共有/公開できる場所を考えていましたが、「静的サイトジェネレータ + GitHub Pages」が今どきらしいので、はじめてみました。&lt;/p&gt;
+&lt;p&gt;まずは、環境構築。&lt;/p&gt;
+&lt;p&gt;静的サイトジェネレータは、Hugoと迷ったのですが、reStructuredText形式で記事をかけるということとPythonで書かれているということでPelicanにしました。&lt;/p&gt;
+&lt;p&gt;macOS Sierraなので、pythonはHomebrewで別途用意した方が楽なようです。というかシステム標準装備品を使うと、いろいろハマるようです。
+先人の教えに従い、Homebrewでpyenvをインストールして、そのあとで、python3.7.2をインストールしました。&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;コードとかTipsを保管/共有/公開できる場所を考えていましたが、「静的サイトジェネレータ + GitHub Pages」が今どきらしいので、はじめてみました。&lt;/p&gt;
+&lt;p&gt;まずは、環境構築。&lt;/p&gt;
+&lt;p&gt;静的サイトジェネレータは、Hugoと迷ったのですが、reStructuredText形式で記事をかけるということとPythonで書かれているということでPelicanにしました。&lt;/p&gt;
+&lt;p&gt;macOS Sierraなので、pythonはHomebrewで別途用意した方が楽なようです。というかシステム標準装備品を使うと、いろいろハマるようです。
+先人の教えに従い、Homebrewでpyenvをインストールして、そのあとで、python3.7.2をインストールしました。&lt;/p&gt;
+</content><category term="pelican"></category><category term="python"></category></entry></feed>
